@@ -16,9 +16,29 @@ const user = new Schema({
     email: {type: String, required: true},
     name: String,
     avatar: String,
-    status: {type: Number, default: 1}
+    status: {type: String, default: '1'},
+    outfits: [outfit]
 }, {
     collection: 'user'
+})
+
+const outfit = new Schema({
+    images: [{
+        origin: [origin],
+        results: [result]
+    }],
+    category: {type: String, default: '0'},
+    createAt: String
+})
+
+const origin = new Schema({
+    url: {type: String, required: true},
+    types: {type: String, default: '0'}
+})
+
+const result = new Schema({
+    url: {type: String, required: true},
+    types: {type: String, default: '0'}
 })
 
 module.exports = mongoose.model('User', user)
