@@ -134,9 +134,9 @@ router.addUser = (req, res) => {
                                         // add user
                                         user.save((err) => {
                                             if (err) {
-                                                res.send(JSON.stringify({code: ERR_NOK, error: err}, null, 5))
+                                                res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
                                             } else {
-                                                res.send(JSON.stringify({code: ERR_OK, message: 'Successfully add user'}, null , 5))
+                                                res.send(JSON.stringify({code: statusCode.ERR_OK, message: 'Successfully add user'}, null , 5))
                                             }
                                         })
                                     }
@@ -148,6 +148,62 @@ router.addUser = (req, res) => {
             }
         }
     })
+}
+
+/**
+ * PUT
+ * updateUser - modify password, avatar and name
+ * params:
+ *  - _id
+ *  - body
+ * @param req
+ * @param res
+ */
+router.updateUser = (req, res) => {
+    res.setHeader('Content-Type', 'application/json')
+
+    // jwt
+    let token = req.body.token
+    if (!token) {
+        res.send(JSON.stringify({code: statusCode.USER_NL, message: 'Not login yet, please login'}, null, 5))
+    } else {
+        jwt.verify(token, config.superSecret, (err, decoded) => {
+            if (err) {
+                res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+            } else {
+                req.decoded = decoded
+
+                User.find({_id: req.params.id}, (err, user) => {
+                    if (err) {
+                        res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+                    } else {
+                        if (user.length === 0) {
+                            res.send(JSON.stringify({code: statusCode.USER_NE, message: 'The user not exists'}, null, 5))
+                        } else {
+                            user = user[0]
+                            let password = req.body.password
+                            if (password && password !== user.password) {
+                                password = sha1(password)
+                            } else {
+                                password = user.password
+                            }
+                            user.password = password
+                            user.name = req.body.name
+                            user.avatar = req.body.avatar
+
+                            user.save((err) => {
+                                if (err) {
+                                    res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+                                } else {
+                                    res.send(JSON.stringify({code: statusCode.ERR_OK, message: 'Successfully update user'}, null, 5))
+                                }
+                            })
+                        }
+                    }
+                })
+            }
+        })
+    }
 }
 
 module.exports = router
