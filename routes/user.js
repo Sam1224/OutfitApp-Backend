@@ -232,4 +232,34 @@ router.deleteUser = (req, res) => {
     }
 }
 
+/**
+ * POST
+ * login - login and generate a token
+ * @param req
+ * @param res
+ */
+router.login = (req, res) => {
+    res.setHeader('Content-Type', 'application/json')
+
+    User.find({username: req.body.username}, (err, user) => {
+        if (err) {
+            res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+        } else {
+            if (user.length === 0) {
+                res.send(JSON.stringify({code: statusCode.USER_NE, message: ''}))
+            } else {
+                user = user[0]
+                if (user.password !== sha1(req.body.password)) {
+                    res.send(JSON.stringify({code: statusCode.USER_WP}, null, 5))
+                } else {
+                    let token = jwt.sign({username: user.username}, config.superSecret, {
+                        expiresIn: 3600
+                    })
+                    res.send(JSON.stringify({code: statusCode.ERR_OK, token: token, message:'Successfully login, use your token'}, null, 5))
+                }
+            }
+        }
+    })
+}
+
 module.exports = router
