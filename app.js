@@ -24,6 +24,7 @@ app.use('/', indexRouter);
 
 app.get('/user', userRouter.findAll)
 app.get('/user/one', userRouter.findOne)
+app.post('/user', userRouter.addUser)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

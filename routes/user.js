@@ -38,7 +38,6 @@ router.findAll = (req, res) => {
  *  - option 2: username + type=1
  *  - option 3: phone + type=2
  *  - option 4: email + type=3
- *  - option 5: name + type=4
  * - option group 2:
  *  - option 1: status=0(default)
  *  - option 2: status=1
@@ -61,8 +60,6 @@ router.findOne = (req, res) => {
         query.phone = req.query.query
     } else if (type === statusCode.EMAIL) {
         query.email = req.query.query
-    } else if (type === statusCode.NAME) {
-        query.name = req.query.query
     } else {
         query._id = req.query.query
     }
@@ -78,6 +75,77 @@ router.findOne = (req, res) => {
             res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
         } else {
             res.send(JSON.stringify({code: statusCode.ERR_OK, data: user}, null, 5))
+        }
+    })
+}
+
+/**
+ * POST
+ * addUser - add one user
+ * @param req
+ * @param res
+ */
+router.addUser = (req, res) => {
+    res.setHeader('Content-Type', 'application/json')
+
+    // params
+    let username = req.body.username
+    let password = req.body.password
+    let phone = req.body.phone
+    let email = req.body.email
+    let name = req.body.name
+    let status = 1
+    let outfits = []
+
+    User.findOne({username: username}, (err, user) => {
+        if (err) {
+            res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+        } else {
+            // username duplication
+            if (user) {
+                res.send(JSON.stringify({code: statusCode.USERNAME_DUP, message: 'The username has been registered'}, null, 5))
+            } else {
+                User.findOne({phone: phone}, (err, user) => {
+                    if (err) {
+                        res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+                    } else {
+                        // phone duplication
+                        if (user) {
+                            res.send(JSON.stringify({code: statusCode.PHONE_DUP, message: 'The phone number has been registered'}, null, 5))
+                        } else {
+                            User.findOne({email: email}, (err, user) => {
+                                if (err) {
+                                    res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+                                } else {
+                                    // email duplication
+                                    if (user) {
+                                        res.send(JSON.stringify({code: statusCode.EMAIL_DUP, message: 'The email has been registered'}, null, 5))
+                                    } else {
+                                        user = new User()
+                                        user.username = username
+                                        user.password = sha1(password)
+                                        user.phone = phone
+                                        user.email = email
+                                        user.name = name
+                                        user.avatar = null
+                                        user.status = status
+                                        user.outfits = outfits
+
+                                        // add user
+                                        user.save((err) => {
+                                            if (err) {
+                                                res.send(JSON.stringify({code: ERR_NOK, error: err}, null, 5))
+                                            } else {
+                                                res.send(JSON.stringify({code: ERR_OK, message: 'Successfully add user'}, null , 5))
+                                            }
+                                        })
+                                    }
+                                }
+                            })
+                        }
+                    }
+                })
+            }
         }
     })
 }

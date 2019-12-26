@@ -10,7 +10,6 @@ const statusCode = {
     USERNAME: '1',
     PHONE: '2',
     EMAIL: '3',
-    NAME: '4',
     ACTIVATE: '0',
     UNACTIVATE: '1'
 }
