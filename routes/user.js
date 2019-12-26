@@ -154,7 +154,7 @@ router.addUser = (req, res) => {
  * PUT
  * updateUser - modify password, avatar and name
  * params:
- *  - _id
+ *  - id
  *  - body
  * @param req
  * @param res
@@ -201,6 +201,32 @@ router.updateUser = (req, res) => {
                         }
                     }
                 })
+            }
+        })
+    }
+}
+
+/**
+ * DELETE
+ * deleteUser - delete one user
+ * params:
+ *  - id
+ * @param req
+ * @param res
+ */
+router.deleteUser = (req, res) => {
+    res.setHeader('Content-Type', 'application/json')
+
+    // jwt
+    let token = req.body.token
+    if (!token) {
+        res.send(JSON.stringify({code: statusCode.USER_NL, message: 'Not login yet, please login'}, null, 5))
+    } else {
+        User.findByIdAndRemove(req.params.id, (err, user) => {
+            if (err) {
+                res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+            } else {
+                res.send(JSON.stringify({code: statusCode.ERR_OK, message: 'Successfully delete user'}, null, 5))
             }
         })
     }
