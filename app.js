@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var mongoose = require('mongoose')
 
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');
@@ -37,5 +38,18 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+// connect to database
+const url = 'mongodb://sam:yyq19981212@ds021016.mlab.com:21016/heroku_lzpgpltq'
+mongoose.connect(url)
+
+var db = mongoose.connection
+
+db.on('error', (err) => {
+  console.log('connection error', err)
+})
+db.once('open', function () {
+  console.log(`connected to remote mongodb: ${url}`)
+})
 
 module.exports = app;
