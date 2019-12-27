@@ -7,6 +7,7 @@ var mongoose = require('mongoose')
 
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');
+var adminRouter = require('./routes/admin')
 
 var app = express();
 
@@ -29,6 +30,8 @@ app.put('/user/:id', userRouter.updateUser)
 app.delete('/user/:id', userRouter.deleteUser)
 app.post('/login', userRouter.login)
 app.get('/token/:username', userRouter.getToken)
+
+app.get('/admin', adminRouter.findAll)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
