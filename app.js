@@ -32,6 +32,7 @@ app.post('/login', userRouter.login)
 app.get('/token/:username', userRouter.getToken)
 
 app.get('/admin', adminRouter.findAll)
+app.get('/admin/:id', adminRouter.findOne)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

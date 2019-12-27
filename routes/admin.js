@@ -43,4 +43,30 @@ router.findAll = (req, res) => {
     }
 }
 
+router.findOne = (req, res) => {
+    res.setHeader('Content-Type', 'application/json')
+
+    // jwt
+    let token = req.body.token
+    if (!token) {
+        res.send(JSON.stringify({code: statusCode.USER_NL, message: 'Not login yet, please login'}, null, 5))
+    } else {
+        jwt.verify(token, config.superSecret, (err, decoded) => {
+            if (err) {
+                res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+            } else {
+                req.decoded = decoded
+
+                Admin.find({_id: req.params.id}, (err, admin) => {
+                    if (err) {
+                        res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+                    } else {
+                        res.send(JSON.stringify({code: statusCode.ERR_OK, data: admin}, null, 5))
+                    }
+                })
+            }
+        })
+    }
+}
+
 module.exports = router
