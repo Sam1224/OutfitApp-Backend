@@ -148,4 +148,55 @@ router.addAdmin = (req, res) => {
     }
 }
 
+/**
+ * PUT
+ * updateAdmin - modify password
+ * @param req
+ * @param res
+ */
+router.updateAdmin = (req, res) => {
+    res.setHeader('Content-Type', 'application/json')
+
+    // jwt
+    let token = req.body.token
+    if (!token) {
+        res.send(JSON.stringify({code: statusCode.USER_NL, message: 'Not login yet, please login'}, null, 5))
+    } else {
+        jwt.verify(token, config.superSecret, (err, decoded) => {
+            if (err) {
+                res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+            } else {
+                req.decoded = decoded
+
+                Admin.find({_id: req.params.id}, (err, admin) => {
+                    if (err) {
+                        res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+                    } else {
+                        if (admin.length === 0) {
+                            res.send(JSON.stringify({code: statusCode.USER_NE, message: 'The admin not exists'}, null, 5))
+                        } else {
+                            admin = admin[0]
+                            let password = req.body.password
+                            if (password && password !== admin.password) {
+                                password = sha1(password)
+                            } else {
+                                password = admin.password
+                            }
+                            admin.password = password
+
+                            admin.save((err) => {
+                                if (err) {
+                                    res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+                                } else {
+                                    res.send(JSON.stringify({code: statusCode.ERR_OK, message: 'Successfully update admin'}, null, 5))
+                                }
+                            })
+                        }
+                    }
+                })
+            }
+        })
+    }
+}
+
 module.exports = router
