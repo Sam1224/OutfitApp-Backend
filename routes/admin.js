@@ -199,4 +199,30 @@ router.updateAdmin = (req, res) => {
     }
 }
 
+/**
+ * DELETE
+ * deleteAdmin - delete one admin
+ * params:
+ *  - id
+ * @param req
+ * @param res
+ */
+router.deleteAdmin = (req, res) => {
+    res.setHeader('Content-Type', 'application/json')
+
+    // jwt
+    let token = req.body.token
+    if (!token) {
+        res.send(JSON.stringify({code: statusCode.USER_NL, message: 'Not login yet, please login'}, null, 5))
+    } else {
+        Admin.findByIdAndRemove(req.params.id, (err, admin) => {
+            if (err) {
+                res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+            } else {
+                res.send(JSON.stringify({code: statusCode.ERR_OK, message: 'Successfully delete admin'}, null, 5))
+            }
+        })
+    }
+}
+
 module.exports = router
