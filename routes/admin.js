@@ -43,6 +43,15 @@ router.findAll = (req, res) => {
     }
 }
 
+/**
+ * GET
+ * findOne - get one admin
+ * params:
+ *  - id
+ *  - body
+ * @param req
+ * @param res
+ */
 router.findOne = (req, res) => {
     res.setHeader('Content-Type', 'application/json')
 
@@ -64,6 +73,76 @@ router.findOne = (req, res) => {
                         res.send(JSON.stringify({code: statusCode.ERR_OK, data: admin}, null, 5))
                     }
                 })
+            }
+        })
+    }
+}
+
+/**
+ * POST
+ * addAdmin - add one admin
+ * @param req
+ * @param res
+ */
+router.addAdmin = (req, res) => {
+    res.setHeader('Content-Type', 'application/json')
+
+    // params
+    let username = req.body.username
+    let password = req.body.password
+    let phone = req.body.phone
+    let email = req.body.email
+
+    // jwt
+    let token = req.body.token
+    if (!token) {
+        res.send(JSON.stringify({code: statusCode.USER_NL, message: 'Not login yet, please login'}, null, 5))
+    } else {
+        Admin.findOne({username: username}, (err, admin) => {
+            if (err) {
+                res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+            } else {
+                // username duplication
+                if (admin) {
+                    res.send(JSON.stringify({code: statusCode.USERNAME_DUP, message: 'The username has been registered'}, null, 5))
+                } else {
+                    Admin.findOne({phone: phone}, (err, admin) => {
+                        if (err) {
+                            res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+                        } else {
+                            // phone duplication
+                            if (admin) {
+                                res.send(JSON.stringify({code: statusCode.PHONE_DUP, message: 'The phone number has been registered'}, null, 5))
+                            } else {
+                                Admin.findOne({email: email}, (err, admin) => {
+                                    if (err) {
+                                        res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+                                    } else {
+                                        // email duplication
+                                        if (admin) {
+                                            res.send(JSON.stringify({code: statusCode.EMAIL_DUP, message: 'The email has been registered'}, null, 5))
+                                        } else {
+                                            admin = new Admin()
+                                            admin.username = username
+                                            admin.password = sha1(password)
+                                            admin.phone = phone
+                                            admin.email = email
+
+                                            // add admin
+                                            admin.save((err) => {
+                                                if (err) {
+                                                    res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+                                                } else {
+                                                    res.send(JSON.stringify({code: statusCode.ERR_OK, message: 'Successfully add admin'}, null , 5))
+                                                }
+                                            })
+                                        }
+                                    }
+                                })
+                            }
+                        }
+                    })
+                }
             }
         })
     }
