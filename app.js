@@ -37,6 +37,7 @@ app.post('/admin', adminRouter.addAdmin)
 app.put('/admin/:id', adminRouter.updateAdmin)
 app.delete('/admin/:id', adminRouter.deleteAdmin)
 app.post('/admin/login', adminRouter.login)
+app.get('/admin/token/:username', adminRouter.getToken)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

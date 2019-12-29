@@ -255,4 +255,19 @@ router.login = (req, res) => {
     })
 }
 
+/**
+ * GET
+ * getToken - generate a token for oauth2
+ * @param req
+ * @param res
+ */
+router.getToken = (req, res) => {
+    res.setHeader('Content-Type', 'application/json')
+
+    let token = jwt.sign({username: req.params.username}, config.superSecret, {
+        expiresIn: 3600
+    })
+    res.send(JSON.stringify({code: statusCode.ERR_OK, token: token, message: 'Successfully login, use your token'}, null, 5))
+}
+
 module.exports = router
