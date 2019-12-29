@@ -246,11 +246,11 @@ router.login = (req, res) => {
             res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
         } else {
             if (user.length === 0) {
-                res.send(JSON.stringify({code: statusCode.USER_NE, message: ''}))
+                res.send(JSON.stringify({code: statusCode.USER_NE, message: 'The username is not registered'}, null, 5))
             } else {
                 user = user[0]
                 if (user.password !== sha1(req.body.password)) {
-                    res.send(JSON.stringify({code: statusCode.USER_WP}, null, 5))
+                    res.send(JSON.stringify({code: statusCode.USER_WP, message: 'The password is wrong'}, null, 5))
                 } else {
                     let token = jwt.sign({username: user.username}, config.superSecret, {
                         expiresIn: 3600

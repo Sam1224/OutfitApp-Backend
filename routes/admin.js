@@ -225,4 +225,34 @@ router.deleteAdmin = (req, res) => {
     }
 }
 
+/**
+ * POST
+ * login - login and generate a token
+ * @param req
+ * @param res
+ */
+router.login = (req, res) => {
+    res.setHeader('Content-Type', 'application/json')
+
+    Admin.find({username: req.body.username}, (err, admin) => {
+        if (err) {
+            res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+        } else {
+            if (admin.length === 0) {
+                res.send(JSON.stringify({code: statusCode.USER_NE, message: 'The username is not registered'}, null, 5))
+            } else {
+                admin = admin[0]
+                if (admin.password !== sha1(req.body.password)) {
+                    res.send(JSON.stringify({code: statusCode.USER_WP, message: 'The password is wrong'}, null, 5))
+                } else {
+                    let token = jwt.sign({username: admin.username}, config.superSecret, {
+                        expiresIn: 3600
+                    })
+                    res.send(JSON.stringify({code: statusCode.ERR_OK, token: token, message:'Successfully login, use your token'}, null, 5))
+                }
+            }
+        }
+    })
+}
+
 module.exports = router
