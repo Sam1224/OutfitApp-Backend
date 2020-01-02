@@ -167,6 +167,23 @@ describe('User', () => {
                         })
                 })
             })
+            describe('when type is 2', () => {
+                it('should query for phone', () => {
+                    return request(server)
+                        .get(`/user/one?type=2&query=0894889596&status=0`)
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(200)
+                        .then((res) => {
+                            expect(res.body.code).to.equal(0)
+                            expect(res.body.data.length).to.equal(1)
+                            expect(res.body.data[0]).to.have.property('username', 'user1')
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                })
+            })
         })
     })
 })
