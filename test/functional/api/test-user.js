@@ -322,4 +322,29 @@ describe('User', () => {
             })
         })
     })
+
+    describe('PUT /user', () => {
+        describe('when there is no jwt token', () => {
+            it('should a message showing Not login yet, please login', () => {
+                let user = {}
+                user.token = null
+                user.password = '123456'
+                user.name = 'U1'
+                user.avatar = null
+                return request(server)
+                    .put(`/user/${validID}`)
+                    .send(user)
+                    .set('Accept', 'application/json')
+                    .expect('Content-Type', /json/)
+                    .expect(200)
+                    .then((res) => {
+                        expect(res.body.code).to.equal(1)
+                        expect(res.body.message).equals('Not login yet, please login')
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+            })
+        })
+    })
 })
