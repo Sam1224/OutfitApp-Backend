@@ -10,6 +10,8 @@ selenium-debug.log
 /uploads
 /test/database/diagnostic.data
 /test/database/mongod.lock
+/coverage
+/.nyc_output
 
 # Editor directories and files
 .idea

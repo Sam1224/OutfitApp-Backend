@@ -1,0 +1,6 @@
+reporter:
+  - lcov
+  - text
+exclude:
+  - 'routes/file.js'
+  - 'routes/oauth.js'

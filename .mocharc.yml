@@ -1,0 +1,4 @@
+file:
+  - ./test/functional/api/test-user.js
+  - ./test/functional/api/test-admin.js
+require: '@babel/register'
