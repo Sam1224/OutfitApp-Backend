@@ -569,4 +569,21 @@ describe('Admin', () => {
             })
         })
     })
+
+    describe('GET /admin/token/:username', () => {
+        it('should return a token and a message showing Successfully login, use your token', () => {
+            return request(server)
+                .get('/admin/token/Sam1224')
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .then((res) => {
+                    expect(res.body.code).to.equal(0)
+                    expect(res.body.message).equals('Successfully login, use your token')
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        })
+    })
 })
