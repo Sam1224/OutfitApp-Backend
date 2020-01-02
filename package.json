@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "compile": "babel ./ --out-dir dist/ --ignore ./node_modules,./test --copy-files",
     "start": "node ./bin/www",
     "test": "cross-env NODE_ENV=test mocha --timeout 10000 test/functional/api/*.js --exit",
     "test:user": "cross-env NODE_ENV=test mocha --timeout 10000 test/functional/api/test-user.js --exit",
