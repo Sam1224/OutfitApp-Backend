@@ -11,6 +11,7 @@ const statusCode = {
     PHONE_DUP: 3,
     EMAIL_DUP: 4,
     USER_NE: 5,
+    INV_EXT: 6,
     ID: '0',
     USERNAME: '1',
     PHONE: '2',

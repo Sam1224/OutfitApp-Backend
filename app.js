@@ -4,13 +4,18 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose')
+var multer = require('multer')
 
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');
 var adminRouter = require('./routes/admin')
 var oauthRouter = require('./routes/oauth')
+var fileRouter = require('./routes/file')
 
 var app = express();
+
+// upload files
+const upload = multer({dest: 'uploads/'})
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -23,6 +28,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+
+// File
+app.post('/upload', upload.single('file'), fileRouter.upload)
 
 // Oauth2
 app.get('/loginGithub', oauthRouter.getGithubToken)
