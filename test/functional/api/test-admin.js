@@ -362,5 +362,27 @@ describe('Admin', () => {
                     })
             })
         })
+        describe('when there is a jwt token', () => {
+            describe('when the token is invalid', () => {
+                it('should return an invalid error', () => {
+                    let admin = {}
+                    admin.token = '123'
+                    admin.password = '123456'
+                    return request(server)
+                        .put(`/admin/${validID}`)
+                        .send(admin)
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(200)
+                        .then((res) => {
+                            expect(res.body.code).to.equal(-1)
+                            expect(res.body.error.name).equals('JsonWebTokenError')
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                })
+            })
+        })
     })
 })
