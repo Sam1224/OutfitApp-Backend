@@ -504,4 +504,27 @@ describe('Admin', () => {
             })
         })
     })
+
+    describe('POST /admin/login', () => {
+        describe('when the username is not registered', () => {
+            it('should return a message showing The username is not registered', () => {
+                let admin = {}
+                admin.username = 'ss'
+                admin.password = '123456'
+                return request(server)
+                    .post('/admin/login')
+                    .send(admin)
+                    .set('Accept', 'application/json')
+                    .expect('Content-Type', /json/)
+                    .expect(200)
+                    .then((res) => {
+                        expect(res.body.code).to.equal(5)
+                        expect(res.body.message).equals('The username is not registered')
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+            })
+        })
+    })
 })
