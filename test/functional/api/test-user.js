@@ -487,4 +487,27 @@ describe('User', () => {
             })
         })
     })
+
+    describe('POST /login', () => {
+        describe('when the username is not registered', () => {
+            it('should return a message showing The username is not registered', () => {
+                let user = {}
+                user.username = 'ss'
+                user.password = '123456'
+                return request(server)
+                    .post('/login')
+                    .send(user)
+                    .set('Accept', 'application/json')
+                    .expect('Content-Type', /json/)
+                    .expect(200)
+                    .then((res) => {
+                        expect(res.body.code).to.equal(5)
+                        expect(res.body.message).equals('The username is not registered')
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+            })
+        })
+    })
 })
