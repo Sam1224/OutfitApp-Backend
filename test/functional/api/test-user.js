@@ -276,5 +276,50 @@ describe('User', () => {
                 })
             })
         })
+        describe('when the params are valid', () => {
+            it('should return a message showing Successfully add user', () => {
+                let user = new User()
+                user.username = 'user3'
+                user.password = sha1('123456')
+                user.phone = '0894889594'
+                user.email = '20086454@mail.wit.ie'
+                user.name = 'Test User 3'
+                return request(server)
+                    .post('/user')
+                    .set('Accept', 'application/json')
+                    .expect('Content-Type', /json/)
+                    .send(user)
+                    .expect(200)
+                    .then((res) => {
+                        expect(res.body.code).to.equal(0)
+                        expect(res.body.message).equals('Successfully add user')
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+            })
+            after(() => {
+                return request(server)
+                    .get('/user')
+                    .set('Accept', 'application/json')
+                    .expect('Content-Type', /json/)
+                    .expect(200)
+                    .then((res) => {
+                        expect(res.body.code).to.equal(0)
+                        expect(res.body.data.length).to.equal(3)
+                        let result = _.map(res.body.data, (user) => {
+                            return {
+                                username: user.username
+                            }
+                        })
+                        expect(result).to.deep.include({
+                            username: 'user3'
+                        })
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+            })
+        })
     })
 })
