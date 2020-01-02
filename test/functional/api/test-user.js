@@ -451,6 +451,40 @@ describe('User', () => {
                         })
                 })
             })
+            describe('when the token is valid', () => {
+                it('should return a message of Successfully delete user', () => {
+                    let user = {}
+                    user.token = token
+                    return request(server)
+                        .delete(`/user/${validID}`)
+                        .send(user)
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(200)
+                        .then((res) => {
+                            expect(res.body.code).to.equal(0)
+                            expect(res.body.message).equals('Successfully delete user')
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                })
+                after(() => {
+                    return request(server)
+                        .get('/user')
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(200)
+                        .then((res) => {
+                            expect(res.body.code).to.equal(0)
+                            expect(res.body.data).to.be.a('array')
+                            expect(res.body.data.length).to.equal(1)
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                })
+            })
         })
     })
 })
