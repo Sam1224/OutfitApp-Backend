@@ -340,4 +340,27 @@ describe('Admin', () => {
             })
         })
     })
+
+    describe('PUT /admin/:id', () => {
+        describe('when there is no jwt token', () => {
+            it('should a message showing Not login yet, please login', () => {
+                let admin = {}
+                admin.token = null
+                admin.password = '123456'
+                return request(server)
+                    .put(`/admin/${validID}`)
+                    .send(admin)
+                    .set('Accept', 'application/json')
+                    .expect('Content-Type', /json/)
+                    .expect(200)
+                    .then((res) => {
+                        expect(res.body.code).to.equal(1)
+                        expect(res.body.message).equals('Not login yet, please login')
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+            })
+        })
+    })
 })
