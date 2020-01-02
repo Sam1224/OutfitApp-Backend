@@ -203,4 +203,32 @@ describe('User', () => {
             })
         })
     })
+
+    describe('POST /user', () => {
+        describe('when the params are invalid', () => {
+            describe('when the username is duplicated', () => {
+                it('should return a message showing The username has been registered', () => {
+                    let user = new User()
+                    user.username = 'user1'
+                    user.password = sha1('123456')
+                    user.phone = '0894889594'
+                    user.email = '20086454@mail.wit.ie'
+                    user.name = 'Test User 3'
+                    return request(server)
+                        .post('/user')
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .send(user)
+                        .expect(200)
+                        .then((res) => {
+                            expect(res.body.code).to.equal(2)
+                            expect(res.body.message).equals('The username has been registered')
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                })
+            })
+        })
+    })
 })
