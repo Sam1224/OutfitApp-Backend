@@ -32,6 +32,7 @@ app.use('/', indexRouter);
 // File
 app.post('/upload', upload.single('file'), fileRouter.upload)
 app.post('/uploadmul', upload.array('files', 10), fileRouter.uploadmul)
+app.get('/uploads/:filename', fileRouter.getImage)
 
 // Oauth2
 app.get('/loginGithub', oauthRouter.getGithubToken)

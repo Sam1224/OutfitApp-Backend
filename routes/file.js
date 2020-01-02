@@ -59,4 +59,17 @@ router.uploadmul = (req, res) => {
     res.send(JSON.stringify({code: statusCode.ERR_OK, filepaths: filepaths, message: 'Successfully uploading multiple images'}, null, 5))
 }
 
+/**
+ * GET
+ * getImage - get image
+ * @param req
+ * @param res
+ */
+router.getImage = (req, res) => {
+    let filepath = `uploads/${req.params.filename}`
+    fs.exists(filepath, (exists) => {
+        res.sendfile(exists ? filepath : 'assets/avatar_default.jpg')
+    })
+}
+
 module.exports = router
