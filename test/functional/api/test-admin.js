@@ -383,6 +383,45 @@ describe('Admin', () => {
                         })
                 })
             })
+            describe('when the token is valid', () => {
+                it('should return a message showing Successfully update admin', () => {
+                    let admin = {}
+                    admin.token = token
+                    admin.password = '123456'
+                    return request(server)
+                        .put(`/admin/${validID}`)
+                        .send(admin)
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(200)
+                        .then((res) => {
+                            expect(res.body.code).to.equal(0)
+                            expect(res.body.message).equals('Successfully update admin')
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                })
+                after(() => {
+                    let admin = {}
+                    admin.token = token
+                    return request(server)
+                        .get(`/admin/${validID}`)
+                        .send(admin)
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(200)
+                        .then((res) => {
+                            expect(res.body.code).to.equal(0)
+                            expect(res.body.data.length).to.equal(1)
+                            expect(res.body.data[0]).to.have.property('username', 'admin')
+                            expect(res.body.data[0]).to.have.property('password', sha1('123456'))
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                })
+            })
         })
     })
 })
