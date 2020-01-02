@@ -27,6 +27,8 @@
   },
   "devDependencies": {
     "chai": "^4.0.2",
+    "eslint": "^6.5.1",
+    "eslint-watch": "^6.0.1",
     "mocha": "^6.2.0",
     "mongodb-memory-server": "^6.2.1",
     "supertest": "^4.0.2"
