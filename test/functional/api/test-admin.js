@@ -424,4 +424,26 @@ describe('Admin', () => {
             })
         })
     })
+
+    describe('DELETE /admin/:id', () => {
+        describe('when there is no jwt token', () => {
+            it('should a message showing Not login yet, please login', () => {
+                let admin = {}
+                admin.token = null
+                return request(server)
+                    .delete(`/admin/${validID}`)
+                    .send(admin)
+                    .set('Accept', 'application/json')
+                    .expect('Content-Type', /json/)
+                    .expect(200)
+                    .then((res) => {
+                        expect(res.body.code).to.equal(1)
+                        expect(res.body.message).equals('Not login yet, please login')
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+            })
+        })
+    })
 })
