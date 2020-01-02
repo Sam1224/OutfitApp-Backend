@@ -465,6 +465,43 @@ describe('Admin', () => {
                         })
                 })
             })
+            describe('when the token is valid', () => {
+                it('should return a message showing Successfully delete admin', () => {
+                    let admin = {}
+                    admin.token = token
+                    return request(server)
+                        .delete(`/admin/${validID}`)
+                        .send(admin)
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(200)
+                        .then((res) => {
+                            expect(res.body.code).to.equal(0)
+                            expect(res.body.message).equals('Successfully delete admin')
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                })
+                after(() => {
+                    let admin = {}
+                    admin.token = token
+                    return request(server)
+                        .get('/admin')
+                        .send(admin)
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(200)
+                        .then((res) => {
+                            expect(res.body.code).to.equal(0)
+                            expect(res.body.data).to.be.a('array')
+                            expect(res.body.data.length).to.equal(1)
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                })
+            })
         })
     })
 })
