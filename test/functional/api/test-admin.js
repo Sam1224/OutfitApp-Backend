@@ -269,6 +269,28 @@ describe('Admin', () => {
                         })
                 })
             })
+            describe('when the email is duplicated', () => {
+                it('should return a message showing The email has been registered', () => {
+                    let admin = new Admin()
+                    admin.username = 'admin2'
+                    admin.password = sha1('admin')
+                    admin.phone = '0894889594'
+                    admin.email = 'xusam2412@gmail.com'
+                    return request(server)
+                        .post('/admin')
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .send(admin)
+                        .expect(200)
+                        .then((res) => {
+                            expect(res.body.code).to.equal(4)
+                            expect(res.body.message).equals('The email has been registered')
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                })
+            })
         })
     })
 })
