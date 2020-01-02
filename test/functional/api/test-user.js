@@ -115,4 +115,23 @@ describe('User', () => {
                 })
         })
     })
+
+    describe('GET /user/one', () => {
+        describe('when the content is invalid', () => {
+            it('should return an error', () => {
+                return request(server)
+                    .get('/user/one?type=0&query=test1&status=0')
+                    .set('Accept', 'application/json')
+                    .expect('Content-Type', /json/)
+                    .expect(200)
+                    .then((res) => {
+                        expect(res.body.code).to.equal(-1)
+                        console.log(res.body)
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+            })
+        })
+    })
 })
