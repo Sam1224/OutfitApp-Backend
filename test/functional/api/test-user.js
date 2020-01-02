@@ -150,6 +150,23 @@ describe('User', () => {
                         })
                 })
             })
+            describe('when type is 1', () => {
+                it('should query for username', () => {
+                    return request(server)
+                        .get(`/user/one?type=1&query=user1&status=0`)
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(200)
+                        .then((res) => {
+                            expect(res.body.code).to.equal(0)
+                            expect(res.body.data.length).to.equal(1)
+                            expect(res.body.data[0]).to.have.property('username', 'user1')
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                })
+            })
         })
     })
 })
