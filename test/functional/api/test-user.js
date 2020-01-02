@@ -229,6 +229,29 @@ describe('User', () => {
                         })
                 })
             })
+            describe('when the phone number is duplicated', () => {
+                it('should return a message showing The phone number has been registered', () => {
+                    let user = new User()
+                    user.username = 'user3'
+                    user.password = sha1('123456')
+                    user.phone = '0894889596'
+                    user.email = '20086454@mail.wit.ie'
+                    user.name = 'Test User 3'
+                    return request(server)
+                        .post('/user')
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .send(user)
+                        .expect(200)
+                        .then((res) => {
+                            expect(res.body.code).to.equal(3)
+                            expect(res.body.message).equals('The phone number has been registered')
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                })
+            })
         })
     })
 })
