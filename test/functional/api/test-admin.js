@@ -222,4 +222,31 @@ describe('Admin', () => {
             })
         })
     })
+
+    describe('POST /admin', () => {
+        describe('when the params are invalid', () => {
+            describe('when the username is duplicated', () => {
+                it('should return a message showing The username has been registered', () => {
+                    let admin = new Admin()
+                    admin.username = 'admin'
+                    admin.password = sha1('admin')
+                    admin.phone = '0894889594'
+                    admin.email = '20086454@mail.wit.ie'
+                    return request(server)
+                        .post('/admin')
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .send(admin)
+                        .expect(200)
+                        .then((res) => {
+                            expect(res.body.code).to.equal(2)
+                            expect(res.body.message).equals('The username has been registered')
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                })
+            })
+        })
+    })
 })
