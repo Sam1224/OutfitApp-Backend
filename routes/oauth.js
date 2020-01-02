@@ -122,4 +122,61 @@ router.getGitlabToken = (req, res) => {
     })
 }
 
+/**
+ * GET
+ * getGiteeToken - gitee oauth2
+ * @param req
+ * @param res
+ */
+router.getGiteeToken = (req, res) => {
+    res.setHeader('Content-Type', 'application/json')
+
+    let client_id = req.query.client_id
+    let client_secret = req.query.client_secret
+    let code = req.query.code
+    let grant_type = req.query.grant_type
+    let redirect_uri = req.query.redirect_uri
+    axios.post(`https://gitee.com/oauth/token?grant_type=${grant_type}&code=${code}&client_id=${client_id}&redirect_uri=${redirect_uri}&client_secret=${client_secret}`, {}, {
+        headers: {
+            'accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(response => {
+        res.setHeader('Access-Control-Allow-Origin', '*')
+        let resdata = response.data
+        let accessToken = resdata.access_token
+        if (accessToken) {
+            axios.get(`https://gitee.com/api/v5/user?access_token=${accessToken}`, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then((response) => {
+                let profile = response.data
+                let account = {
+                    username: profile.login,
+                    name: profile.name,
+                    avatar: profile.avatar_url,
+                    type: statusCode.GITEE
+                }
+                let token = jwt.sign({username: account.username}, superSecret, {
+                    expiresIn: 3600
+                })
+                res.send(JSON.stringify({
+                    code: statusCode.ERR_OK,
+                    token: token,
+                    account: account,
+                    message: 'Successfully login, use your token'
+                }, null, 5))
+            })
+        } else {
+            res.send(JSON.stringify({
+                code: statusCode.ERR_NOK,
+                message: 'Invalid token'
+            }, null, 5))
+        }
+    }).catch(e => {
+        console.log(e)
+    })
+}
+
 module.exports = router
