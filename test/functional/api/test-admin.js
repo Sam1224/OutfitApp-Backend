@@ -292,5 +292,52 @@ describe('Admin', () => {
                 })
             })
         })
+        describe('when the params are valid', () => {
+            it('should return a message showing Successfully add admin', () => {
+                let admin = new Admin()
+                admin.username = 'admin2'
+                admin.password = sha1('admin')
+                admin.phone = '0894889594'
+                admin.email = '20086454@mail.wit.ie'
+                return request(server)
+                    .post('/admin')
+                    .set('Accept', 'application/json')
+                    .expect('Content-Type', /json/)
+                    .send(admin)
+                    .expect(200)
+                    .then((res) => {
+                        expect(res.body.code).to.equal(0)
+                        expect(res.body.message).equals('Successfully add admin')
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+            })
+            after(() => {
+                let admin = {}
+                admin.token = token
+                return request(server)
+                    .get('/admin')
+                    .send(admin)
+                    .set('Accept', 'application/json')
+                    .expect('Content-Type', /json/)
+                    .expect(200)
+                    .then((res) => {
+                        expect(res.body.code).to.equal(0)
+                        expect(res.body.data.length).to.equal(3)
+                        let result = _.map(res.body.data, (admin) => {
+                            return {
+                                username: admin.username
+                            }
+                        })
+                        expect(result).to.deep.include({
+                            username: 'admin2'
+                        })
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+            })
+        })
     })
 })
