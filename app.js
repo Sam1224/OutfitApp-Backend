@@ -8,6 +8,7 @@ var mongoose = require('mongoose')
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');
 var adminRouter = require('./routes/admin')
+var oauthRouter = require('./routes/oauth')
 
 var app = express();
 
@@ -23,6 +24,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 
+// Oauth2
+app.get('/loginGithub', oauthRouter.getGithubToken)
+
+// User
 app.get('/user', userRouter.findAll)
 app.get('/user/one', userRouter.findOne)
 app.post('/user', userRouter.addUser)
@@ -31,6 +36,7 @@ app.delete('/user/:id', userRouter.deleteUser)
 app.post('/login', userRouter.login)
 app.get('/token/:username', userRouter.getToken)
 
+// Admin
 app.get('/admin', adminRouter.findAll)
 app.get('/admin/:id', adminRouter.findOne)
 app.post('/admin', adminRouter.addAdmin)

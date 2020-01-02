@@ -16,7 +16,12 @@ const statusCode = {
     PHONE: '2',
     EMAIL: '3',
     ACTIVATE: '0',
-    UNACTIVATE: '1'
+    UNACTIVATE: '1',
+    GITHUB: 'github',
+    GITLAB: 'gitlab',
+    GITEE: 'gitee',
+    BITBUCKET: 'bitbucket',
+    WEIBO: 'weibo'
 }
 
 module.exports = statusCode
