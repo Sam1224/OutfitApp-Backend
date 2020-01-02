@@ -26,6 +26,7 @@ app.use('/', indexRouter);
 
 // Oauth2
 app.get('/loginGithub', oauthRouter.getGithubToken)
+app.get('/loginGitlab', oauthRouter.getGitlabToken)
 
 // User
 app.get('/user', userRouter.findAll)
