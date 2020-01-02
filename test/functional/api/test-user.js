@@ -323,7 +323,7 @@ describe('User', () => {
         })
     })
 
-    describe('PUT /user', () => {
+    describe('PUT /user/:id', () => {
         describe('when there is no jwt token', () => {
             it('should a message showing Not login yet, please login', () => {
                 let user = {}
@@ -407,6 +407,28 @@ describe('User', () => {
                             console.log(err)
                         })
                 })
+            })
+        })
+    })
+
+    describe('DELETE /user/:id', () => {
+        describe('when there is no jwt token', () => {
+            it('should a message showing Not login yet, please login', () => {
+                let user = {}
+                user.token = null
+                return request(server)
+                    .delete(`/user/${validID}`)
+                    .send(user)
+                    .set('Accept', 'application/json')
+                    .expect('Content-Type', /json/)
+                    .expect(200)
+                    .then((res) => {
+                        expect(res.body.code).to.equal(1)
+                        expect(res.body.message).equals('Not login yet, please login')
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
             })
         })
     })
