@@ -179,4 +179,38 @@ router.getGiteeToken = (req, res) => {
     })
 }
 
+/**
+ * GET
+ * getBitbucketToken - bitbucket oauth2
+ * @param req
+ * @param res
+ */
+router.getBitbucketToken = (req, res) => {
+    res.setHeader('Content-Type', 'application/json')
+
+    let access_token = req.query.access_token
+    axios.get(`https://bitbucket.org/api/2.0/user?access_token=${access_token}`, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then((response) => {
+        let profile = response.data
+        let account = {
+            username: profile.username,
+            name: profile.display_name,
+            avatar: profile.links.avatar.href,
+            type: statusCode.BITBUCKET
+        }
+        let token = jwt.sign({username: account.username}, superSecret, {
+            expiresIn: 3600
+        })
+        res.send(JSON.stringify({
+            code: statusCode.ERR_OK,
+            token: token,
+            account: account,
+            message: 'Successfully login, use your token'
+        }, null, 5))
+    })
+}
+
 module.exports = router
