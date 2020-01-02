@@ -126,11 +126,29 @@ describe('User', () => {
                     .expect(200)
                     .then((res) => {
                         expect(res.body.code).to.equal(-1)
-                        console.log(res.body)
                     })
                     .catch((err) => {
                         console.log(err)
                     })
+            })
+        })
+        describe('when the content is valid', () => {
+            describe('when type is 0', () => {
+                it('should query for _id', () => {
+                    return request(server)
+                        .get(`/user/one?type=0&query=${validID}&status=0`)
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(200)
+                        .then((res) => {
+                            expect(res.body.code).to.equal(0)
+                            expect(res.body.data.length).to.equal(1)
+                            expect(res.body.data[0]).to.have.property('username', 'user1')
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                })
             })
         })
     })
