@@ -199,6 +199,27 @@ describe('Admin', () => {
                         })
                 })
             })
+            describe('when the token is valid', () => {
+                it('should return the matching admin', () => {
+                    let admin = {}
+                    admin.token = token
+                    return request(server)
+                        .get(`/admin/${validID}`)
+                        .send(admin)
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(200)
+                        .then((res) => {
+                            expect(res.body.code).to.equal(0)
+                            expect(res.body.data).to.be.a('array')
+                            expect(res.body.data.length).to.equal(1)
+                            expect(res.body.data[0]).to.have.property('username', 'admin')
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                })
+            })
         })
     })
 })
