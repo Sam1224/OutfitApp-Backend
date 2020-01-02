@@ -125,6 +125,37 @@ describe('Admin', () => {
                         })
                 })
             })
+            describe('when the token is valid', () => {
+                it('should return all admins', () => {
+                    let admin = {}
+                    admin.token = token
+                    return request(server)
+                        .get('/admin')
+                        .send(admin)
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(200)
+                        .then((res) => {
+                            expect(res.body.code).to.equal(0)
+                            expect(res.body.data).to.be.a('array')
+                            expect(res.body.data.length).to.equal(2)
+                            let result = _.map(res.body.data, (admin) => {
+                                return {
+                                    username: admin.username
+                                }
+                            })
+                            expect(result).to.deep.include({
+                                username: 'admin'
+                            })
+                            expect(result).to.deep.include({
+                                username: 'admin1'
+                            })
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                })
+            })
         })
     })
 })
