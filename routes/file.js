@@ -33,4 +33,30 @@ router.upload = (req, res) => {
     res.send(JSON.stringify({code: statusCode.ERR_OK, filepath: filepath, message: 'Successfully uploading'}, null, 5))
 }
 
+/**
+ * POST
+ * uploadmul - upload multiple images
+ * @param req
+ * @param res
+ */
+router.uploadmul = (req, res) => {
+    let files = req.files
+    let filepaths = []
+    files.forEach((file) => {
+        let filepath
+        if (file.originalname.endsWith('.jpg')) {
+            filepath = `uploads/${file.filename}.jpg`
+        } else if (file.originalname.endsWith('.png')) {
+            filepath = `uploads/${file.filename}.png`
+        }
+        fs.rename(file.path, filepath, function(err) {
+            if (err) {
+                throw err
+            }
+        })
+        filepaths.push(filepath)
+    })
+    res.send(JSON.stringify({code: statusCode.ERR_OK, filepaths: filepaths, message: 'Successfully uploading multiple images'}, null, 5))
+}
+
 module.exports = router
