@@ -509,5 +509,27 @@ describe('User', () => {
                     })
             })
         })
+        describe('when the username is registered', () => {
+            describe('when the password is wrong', () => {
+                it('should return a message showing The password is wrong', () => {
+                    let user = {}
+                    user.username = 'user1'
+                    user.password = '123'
+                    return request(server)
+                        .post('/login')
+                        .send(user)
+                        .set('Accept', 'application/json')
+                        .expect('Content-Type', /json/)
+                        .expect(200)
+                        .then((res) => {
+                            expect(res.body.code).to.equal(6)
+                            expect(res.body.message).equals('The password is wrong')
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                })
+            })
+        })
     })
 })
