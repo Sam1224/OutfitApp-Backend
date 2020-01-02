@@ -222,11 +222,17 @@ router.deleteUser = (req, res) => {
     if (!token) {
         res.send(JSON.stringify({code: statusCode.USER_NL, message: 'Not login yet, please login'}, null, 5))
     } else {
-        User.findByIdAndRemove(req.params.id, (err, user) => {
+        jwt.verify(token, config.superSecret, (err, decoded) => {
             if (err) {
                 res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
             } else {
-                res.send(JSON.stringify({code: statusCode.ERR_OK, message: 'Successfully delete user'}, null, 5))
+                User.findByIdAndRemove(req.params.id, (err, user) => {
+                    if (err) {
+                        res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+                    } else {
+                        res.send(JSON.stringify({code: statusCode.ERR_OK, message: 'Successfully delete user'}, null, 5))
+                    }
+                })
             }
         })
     }
