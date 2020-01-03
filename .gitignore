@@ -12,6 +12,7 @@ selenium-debug.log
 /test/database/mongod.lock
 /coverage
 /.nyc_output
+.env
 
 # Editor directories and files
 .idea
