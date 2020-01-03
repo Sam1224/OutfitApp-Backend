@@ -15,6 +15,7 @@ variables:
 stages:
   - install
   - build
+  - coverage
   - deploy
 
 # Jobs:
@@ -35,7 +36,7 @@ Build_and_Test:
     - npm test
 
 coverage:
-  stage: build
+  stage: coverage
   script:
     - npm run test:report
   coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
