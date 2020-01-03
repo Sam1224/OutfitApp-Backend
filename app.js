@@ -79,8 +79,14 @@ app.use(function(err, req, res, next) {
 });
 
 // connect to database
-const url = 'mongodb://sam:yyq19981212@ds021016.mlab.com:21016/heroku_lzpgpltq'
-mongoose.connect(url)
+const dotenv = require('dotenv')
+dotenv.config()
+const uri = `${process.env.MONGO_URI}${process.env.MONGO_DB}`
+console.log(uri)
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
 
 var db = mongoose.connection
 
@@ -88,7 +94,7 @@ db.on('error', (err) => {
   console.log('connection error', err)
 })
 db.once('open', function () {
-  console.log(`connected to remote mongodb: ${url}`)
+  console.log(`connected to remote mongodb: ${uri}`)
 })
 
 module.exports = app;
