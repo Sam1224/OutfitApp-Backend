@@ -21,7 +21,7 @@ router.findAll = (req, res) => {
   res.setHeader('Content-Type', 'application/json')
 
   // jwt
-  let token = req.body.token
+  let token = req.headers.token
   if (!token) {
     res.send(JSON.stringify({code: statusCode.USER_NL, message: 'Not login yet, please login'}, null, 5))
   } else {
@@ -56,7 +56,7 @@ router.findOne = (req, res) => {
   res.setHeader('Content-Type', 'application/json')
 
   // jwt
-  let token = req.body.token
+  let token = req.headers.token
   if (!token) {
     res.send(JSON.stringify({code: statusCode.USER_NL, message: 'Not login yet, please login'}, null, 5))
   } else {

@@ -88,11 +88,8 @@ describe('Admin', () => {
   describe('GET /admin', () => {
     describe('when there is no jwt token', () => {
       it('should a message showing Not login yet, please login', () => {
-        let admin = {}
-        admin.token = null
         return request(server)
           .get('/admin')
-          .send(admin)
           .set('Accept', 'application/json')
           .expect('Content-Type', /json/)
           .expect(200)
@@ -113,7 +110,7 @@ describe('Admin', () => {
           return request(server)
             .get('/admin')
             .send(admin)
-            .set('Accept', 'application/json')
+            .set({'Accept': 'application/json', 'token': admin.token})
             .expect('Content-Type', /json/)
             .expect(200)
             .then((res) => {
@@ -132,7 +129,7 @@ describe('Admin', () => {
           return request(server)
             .get('/admin')
             .send(admin)
-            .set('Accept', 'application/json')
+            .set({'Accept': 'application/json', 'token': admin.token})
             .expect('Content-Type', /json/)
             .expect(200)
             .then((res) => {
@@ -167,7 +164,7 @@ describe('Admin', () => {
         return request(server)
           .get(`/admin/${validID}`)
           .send(admin)
-          .set('Accept', 'application/json')
+            .set({'Accept': 'application/json'})
           .expect('Content-Type', /json/)
           .expect(200)
           .then((res) => {
@@ -187,7 +184,7 @@ describe('Admin', () => {
           return request(server)
             .get(`/admin/${validID}`)
             .send(admin)
-            .set('Accept', 'application/json')
+            .set({'Accept': 'application/json', 'token': admin.token})
             .expect('Content-Type', /json/)
             .expect(200)
             .then((res) => {
@@ -206,7 +203,7 @@ describe('Admin', () => {
           return request(server)
             .get(`/admin/${validID}`)
             .send(admin)
-            .set('Accept', 'application/json')
+            .set({'Accept': 'application/json', 'token': admin.token})
             .expect('Content-Type', /json/)
             .expect(200)
             .then((res) => {
@@ -318,8 +315,7 @@ describe('Admin', () => {
         admin.token = token
         return request(server)
           .get('/admin')
-          .send(admin)
-          .set('Accept', 'application/json')
+          .set({'Accept': 'application/json', 'token': admin.token})
           .expect('Content-Type', /json/)
           .expect(200)
           .then((res) => {
@@ -407,8 +403,7 @@ describe('Admin', () => {
           admin.token = token
           return request(server)
             .get(`/admin/${validID}`)
-            .send(admin)
-            .set('Accept', 'application/json')
+            .set({'Accept': 'application/json', 'token': admin.token})
             .expect('Content-Type', /json/)
             .expect(200)
             .then((res) => {
@@ -488,8 +483,7 @@ describe('Admin', () => {
           admin.token = token
           return request(server)
             .get('/admin')
-            .send(admin)
-            .set('Accept', 'application/json')
+            .set({'Accept': 'application/json', token: admin.token})
             .expect('Content-Type', /json/)
             .expect(200)
             .then((res) => {
