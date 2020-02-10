@@ -196,6 +196,62 @@ router.addUser = (req, res) => {
 }
 
 /**
+ * GET
+ * activateAccount - use the url in email to activate account
+ * @param req
+ * @param res
+ */
+router.activateAccount = (req, res) => {
+    res.setHeader('Content-Type', 'application/json')
+
+    let username = req.query.username
+    let token = req.query.token
+
+    if (!token) {
+        res.send(JSON.stringify({code: statusCode.INV_TOKEN, message: 'The token is invalid, fail to activate'}, null, 5))
+    } else {
+        jwt.verify(token, config.superSecret, (err, decoded) => {
+            if (err) {
+                res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+            } else {
+                req.decoded = decoded
+
+                if (decoded.username !== username) {
+                    res.send(JSON.stringify({code: statusCode.INV_U_T, message: 'The token and username are not a pair'}, null, 5))
+                } else {
+                    User.find({username: username}, (err, user) => {
+                        if (err) {
+                            res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+                        } else {
+                            if (user.length === 0) {
+                                res.send(JSON.stringify({
+                                    code: statusCode.USER_NE,
+                                    message: 'The user not exists'
+                                }, null, 5))
+                            } else {
+                                user = user[0]
+                                user.status = 0
+
+                                user.save((err) => {
+                                    if (err) {
+                                        res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+                                    } else {
+                                        res.send(JSON.stringify({
+                                            code: statusCode.ERR_OK,
+                                            message: 'Successfully activate account'
+                                        }, null, 5))
+                                    }
+                                })
+                            }
+                        }
+                    })
+                }
+            }
+        })
+    }
+}
+
+/**
  * PUT
  * updateUser - modify password, avatar and name
  * params:

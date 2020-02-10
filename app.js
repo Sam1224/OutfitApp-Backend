@@ -52,6 +52,7 @@ app.put('/user/:id', userRouter.updateUser)
 app.delete('/user/:id', userRouter.deleteUser)
 app.post('/login', userRouter.login)
 app.get('/token/:username', userRouter.getToken)
+app.get('/activateAccount', userRouter.activateAccount)
 
 // Admin
 app.get('/admin', adminRouter.findAll)

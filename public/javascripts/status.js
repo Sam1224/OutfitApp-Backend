@@ -13,6 +13,8 @@ const statusCode = {
   USER_NE: 5,
   USER_WP: 6,
   INV_EXT: 7,
+  INV_TOKEN: 8,
+  INV_U_T: 9,
   ID: '0',
   USERNAME: '1',
   PHONE: '2',
