@@ -15,6 +15,7 @@ const statusCode = {
   INV_EXT: 7,
   INV_TOKEN: 8,
   INV_U_T: 9,
+  INACTIVATE: 10,
   ID: '0',
   USERNAME: '1',
   PHONE: '2',

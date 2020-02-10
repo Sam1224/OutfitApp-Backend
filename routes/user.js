@@ -367,7 +367,9 @@ router.login = (req, res) => {
                 user = user[0]
                 if (user.password !== sha1(req.body.password)) {
                     res.send(JSON.stringify({code: statusCode.USER_WP, message: 'The password is wrong'}, null, 5))
-                } else {
+                } else if (user.status !== "0") {
+                    res.send(JSON.stringify({code: statusCode.INACTIVATE, message: 'The account has not been activated'}, null, 5))
+                }else {
                     let token = jwt.sign({username: user.username}, config.superSecret, {
                         expiresIn: 3600
                     })
