@@ -77,9 +77,9 @@ router.findOne = (req, res) => {
     }
 
     if (status === statusCode.ACTIVATE) {
-        query.status = 1
-    } else {
         query.status = 0
+    } else {
+        query.status = 1
     }
 
     User.find(query, (err, user) => {

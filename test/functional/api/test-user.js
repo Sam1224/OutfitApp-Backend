@@ -72,6 +72,7 @@ describe('User', () => {
       user.phone = '0894889596'
       user.email = 'xusam2412@gmail.com'
       user.name = 'Test User 1'
+      user.status = 0
       await user.save()
       let user1 = new User()
       user1.username = 'user2'
@@ -79,6 +80,7 @@ describe('User', () => {
       user1.phone = '0894889595'
       user1.email = '1007824874@qq.com'
       user1.name = 'Test User 2'
+      user1.status = 1
       await user1.save()
       user = await User.findOne({username: 'user1'})
       validID = user._id
@@ -531,23 +533,45 @@ describe('User', () => {
         })
       })
       describe('when the password is correct', () => {
-        it('should return a token and a message showing Successfully login, use your token', () => {
-          let user = {}
-          user.username = 'user1'
-          user.password = '123456'
-          return request(server)
-            .post('/login')
-            .send(user)
-            .set('Accept', 'application/json')
-            .expect('Content-Type', /json/)
-            .expect(200)
-            .then((res) => {
-              expect(res.body.code).to.equal(0)
-              expect(res.body.message).equals('Successfully login, use your token')
-            })
-            .catch((err) => {
-              console.log(err)
-            })
+        describe('when the account is inactivated', () => {
+          it('should return a message showing The account has not been activated', () => {
+            let user = {}
+            user.username = 'user2'
+            user.password = '123456'
+            return request(server)
+                .post('/login')
+                .send(user)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .then((res) => {
+                  expect(res.body.code).to.equal(10)
+                  expect(res.body.message).equals('The account has not been activated')
+                })
+                .catch((err) => {
+                  console.log(err)
+                })
+          })
+        })
+        describe('when the account is activated', () => {
+          it('should return a token and a message showing Successfully login, use your token', () => {
+            let user = {}
+            user.username = 'user1'
+            user.password = '123456'
+            return request(server)
+                .post('/login')
+                .send(user)
+                .set('Accept', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .then((res) => {
+                  expect(res.body.code).to.equal(0)
+                  expect(res.body.message).equals('Successfully login, use your token')
+                })
+                .catch((err) => {
+                  console.log(err)
+                })
+          })
         })
       })
     })
