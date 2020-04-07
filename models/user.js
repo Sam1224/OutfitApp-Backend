@@ -6,27 +6,10 @@
 /**
  * User schema
  */
+import * as vton from 'vton'
+import * as retrieval from 'retrieval'
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-
-const origin = new Schema({
-  url: {type: String, required: true},
-  types: {type: String, default: '0'}
-})
-
-const result = new Schema({
-  url: {type: String, required: true},
-  types: {type: String, default: '0'}
-})
-
-const outfit = new Schema({
-  images: [{
-    origin: [origin],
-    results: [result]
-  }],
-  category: {type: String, default: '0'},
-  createAt: String
-})
 
 const user = new Schema({
   username: {type: String, required: true},
@@ -36,7 +19,8 @@ const user = new Schema({
   name: String,
   avatar: String,
   status: {type: String, default: '1'},
-  outfits: [outfit]
+  vton: [vton.schema],
+  retrieval: [retrieval.schema]
 }, {
   collection: 'user'
 })
