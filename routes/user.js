@@ -419,6 +419,10 @@ router.getToken = (req, res) => {
 router.addVton = (req, res) => {
     res.setHeader('Content-Type', 'application/json')
 
+    // params
+    let id = req.body._id
+    let username = req.body.username
+
     User.findOne({_id: id, username: username}, (err, user) => {
         if (err) {
             res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
@@ -434,9 +438,6 @@ router.addVton = (req, res) => {
                 } else {
                     user = user[0]
 
-                    // params
-                    let id = req.body._id
-                    let username = req.body.username
                     let pose = req.body.pose
                     let cloth = req.body.cloth
                     let result = req.body.result
@@ -473,6 +474,10 @@ router.addVton = (req, res) => {
 router.deleteVton = (req, res) => {
     res.setHeader('Content-Type', 'application/json')
 
+    // params
+    let id = req.body._id
+    let username = req.body.username
+
     User.findOne({_id: id, username: username}, (err, user) => {
         if (err) {
             res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
@@ -488,9 +493,6 @@ router.deleteVton = (req, res) => {
                 } else {
                     user = user[0]
 
-                    // params
-                    let id = req.body._id
-                    let username = req.body.username
                     let vtonid = req.body.vtonid
                     let pose = req.body.pose
                     let cloth = req.body.cloth
@@ -529,6 +531,10 @@ router.deleteVton = (req, res) => {
 router.addRetrieval = (req, res) => {
     res.setHeader('Content-Type', 'application/json')
 
+    // params
+    let id = req.body._id
+    let username = req.body.username
+
     User.findOne({_id: id, username: username}, (err, user) => {
         if (err) {
             res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
@@ -544,9 +550,6 @@ router.addRetrieval = (req, res) => {
                 } else {
                     user = user[0]
 
-                    // params
-                    let _id = req.body._id
-                    let username = req.body.username
                     let cloth = req.body.cloth
                     let results = req.body.results
                     let createAt = new Date()
@@ -581,6 +584,10 @@ router.addRetrieval = (req, res) => {
 router.deleteRetrieval = (req, res) => {
     res.setHeader('Content-Type', 'application/json')
 
+    // params
+    let id = req.body._id
+    let username = req.body.username
+
     User.findOne({_id: id, username: username}, (err, user) => {
         if (err) {
             res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
@@ -596,9 +603,6 @@ router.deleteRetrieval = (req, res) => {
                 } else {
                     user = user[0]
 
-                    // params
-                    let id = req.body._id
-                    let username = req.body.username
                     let retrievalid = req.body.retrievalid
                     let pose = req.body.pose
                     let cloth = req.body.cloth
