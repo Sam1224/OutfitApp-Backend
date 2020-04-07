@@ -6,8 +6,8 @@
 /**
  * User schema
  */
-const vton = require('vton')
-const retrieval = require('retrieval')
+const vton = require('./vton')
+const retrieval = require('./retrieval')
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
