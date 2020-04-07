@@ -497,12 +497,10 @@ router.deleteVton = (req, res) => {
                     let pose = req.body.pose
                     let cloth = req.body.cloth
                     let result = req.body.result
-                    let createAt = new Date()
+                    let createAt = req.body.createAt
 
                     let vton = {}
-                    vton._id = {
-                        "$oid": vtonid
-                    }
+                    vton._id = vtonid
                     vton.pose = pose
                     vton.cloth = cloth
                     vton.result = result
@@ -609,12 +607,10 @@ router.deleteRetrieval = (req, res) => {
                     let pose = req.body.pose
                     let cloth = req.body.cloth
                     let result = req.body.result
-                    let createAt = new Date()
+                    let createAt = req.body.createAt
 
                     let retrieval = {}
-                    retrieval._id = {
-                        "$oid": retrievalid
-                    }
+                    retrieval._id = retrievalid
                     retrieval.pose = pose
                     retrieval.cloth = cloth
                     retrieval.result = result
