@@ -11,6 +11,11 @@ var jwt = require('jsonwebtoken')
 var config = require('../config')
 var statusCode = require('../public/javascripts/status')
 const nodemailer = require('nodemailer')
+const vtonDict = require('../models/vton')
+const retrievalDict = require('../models/retrieval')
+
+const Vton = vtonDict.model
+const Retrieval = retrievalDict.model
 
 const mailConfig = {
     host: 'smtp.163.com',
@@ -401,6 +406,224 @@ router.getToken = (req, res) => {
         token: token,
         message: 'Successfully login, use your token'
     }, null, 5))
+}
+
+/**
+ * POST
+ * addVton - add one vton record
+ * @param req
+ * @param res
+ */
+router.addVton = (req, res) => {
+    res.setHeader('Content-Type', 'application/json')
+
+    User.findOne({_id: id, username: username}, (err, user) => {
+        if (err) {
+            res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+        } else {
+            if (err) {
+                res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+            } else {
+                if (user.length === 0) {
+                    res.send(JSON.stringify({
+                        code: statusCode.USER_NE,
+                        message: 'The user not exists'
+                    }, null, 5))
+                } else {
+                    user = user[0]
+
+                    // params
+                    let id = req.body._id
+                    let username = req.body.username
+                    let pose = req.body.pose
+                    let cloth = req.body.cloth
+                    let result = req.body.result
+                    let createAt = new Date()
+
+                    let vton = new Vton()
+                    vton.pose = pose
+                    vton.cloth = cloth
+                    vton.result = result
+                    vton.createAt = createAt
+
+                    User.update({_id: id, username: username}, {$addToSet: {vton: vton}}, (err) => {
+                        if (err) {
+                            res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+                        } else {
+                            res.send(JSON.stringify({
+                                code: statusCode.ERR_OK,
+                                message: 'Successfully add vton record'
+                            }, null, 5))
+                        }
+                    })
+                }
+            }
+        }
+    })
+}
+
+/**
+ * DELETE
+ * deleteVton - delete one vton record
+ * @param req
+ * @param res
+ */
+router.deleteVton = (req, res) => {
+    res.setHeader('Content-Type', 'application/json')
+
+    User.findOne({_id: id, username: username}, (err, user) => {
+        if (err) {
+            res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+        } else {
+            if (err) {
+                res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+            } else {
+                if (user.length === 0) {
+                    res.send(JSON.stringify({
+                        code: statusCode.USER_NE,
+                        message: 'The user not exists'
+                    }, null, 5))
+                } else {
+                    user = user[0]
+
+                    // params
+                    let id = req.body._id
+                    let username = req.body.username
+                    let vtonid = req.body.vtonid
+                    let pose = req.body.pose
+                    let cloth = req.body.cloth
+                    let result = req.body.result
+                    let createAt = new Date()
+
+                    let vton = {}
+                    vton._id = vtonid
+                    vton.pose = pose
+                    vton.cloth = cloth
+                    vton.result = result
+                    vton.createAt = createAt
+
+                    User.update({_id: id, username: username}, {$pull: {vton: vton}}, (err) => {
+                        if (err) {
+                            res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+                        } else {
+                            res.send(JSON.stringify({
+                                code: statusCode.ERR_OK,
+                                message: 'Successfully delete vton record'
+                            }, null, 5))
+                        }
+                    })
+                }
+            }
+        }
+    })
+}
+
+/**
+ * POST
+ * addRetrieval - add one retrieval record
+ * @param req
+ * @param res
+ */
+router.addRetrieval = (req, res) => {
+    res.setHeader('Content-Type', 'application/json')
+
+    User.findOne({_id: id, username: username}, (err, user) => {
+        if (err) {
+            res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+        } else {
+            if (err) {
+                res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+            } else {
+                if (user.length === 0) {
+                    res.send(JSON.stringify({
+                        code: statusCode.USER_NE,
+                        message: 'The user not exists'
+                    }, null, 5))
+                } else {
+                    user = user[0]
+
+                    // params
+                    let _id = req.body._id
+                    let username = req.body.username
+                    let cloth = req.body.cloth
+                    let results = req.body.results
+                    let createAt = new Date()
+
+                    let retrieval = new Retrieval()
+                    retrieval.cloth = cloth
+                    retrieval.results = results
+                    retrieval.createAt = createAt
+
+                    User.update({_id: id, username: username}, {$addToSet: {retrieval: retrieval}}, (err) => {
+                        if (err) {
+                            res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+                        } else {
+                            res.send(JSON.stringify({
+                                code: statusCode.ERR_OK,
+                                message: 'Successfully add retrieval record'
+                            }, null, 5))
+                        }
+                    })
+                }
+            }
+        }
+    })
+}
+
+/**
+ * DELETE
+ * deleteRetrieval - delete one retrieval record
+ * @param req
+ * @param res
+ */
+router.deleteRetrieval = (req, res) => {
+    res.setHeader('Content-Type', 'application/json')
+
+    User.findOne({_id: id, username: username}, (err, user) => {
+        if (err) {
+            res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+        } else {
+            if (err) {
+                res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+            } else {
+                if (user.length === 0) {
+                    res.send(JSON.stringify({
+                        code: statusCode.USER_NE,
+                        message: 'The user not exists'
+                    }, null, 5))
+                } else {
+                    user = user[0]
+
+                    // params
+                    let id = req.body._id
+                    let username = req.body.username
+                    let retrievalid = req.body.retrievalid
+                    let pose = req.body.pose
+                    let cloth = req.body.cloth
+                    let result = req.body.result
+                    let createAt = new Date()
+
+                    let retrieval = {}
+                    retrieval._id = retrievalid
+                    retrieval.pose = pose
+                    retrieval.cloth = cloth
+                    retrieval.result = result
+                    retrieval.createAt = createAt
+
+                    User.update({_id: id, username: username}, {$pull: {retrieval: retrieval}}, (err) => {
+                        if (err) {
+                            res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
+                        } else {
+                            res.send(JSON.stringify({
+                                code: statusCode.ERR_OK,
+                                message: 'Successfully delete retrieval record'
+                            }, null, 5))
+                        }
+                    })
+                }
+            }
+        }
+    })
 }
 
 module.exports = router

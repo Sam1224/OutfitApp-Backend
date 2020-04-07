@@ -53,6 +53,10 @@ app.delete('/user/:id', userRouter.deleteUser)
 app.post('/login', userRouter.login)
 app.get('/token/:username', userRouter.getToken)
 app.get('/activateAccount', userRouter.activateAccount)
+app.post('/user/vton', userRouter.addVton)
+app.delete('/user/vton', userRouter.deleteVton)
+app.post('/user/retrieval', userRouter.addRetrieval)
+app.delete('/user/retrieval', userRouter.deleteRetrieval)
 
 // Admin
 app.get('/admin', adminRouter.findAll)

@@ -6,8 +6,8 @@
 /**
  * User schema
  */
-import * as vton from 'vton'
-import * as retrieval from 'retrieval'
+const vton = require('vton')
+const retrieval = require('retrieval')
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
