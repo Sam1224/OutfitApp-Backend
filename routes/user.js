@@ -112,7 +112,8 @@ router.addUser = (req, res) => {
     let email = req.body.email
     let name = req.body.name
     let status = 1
-    let outfits = []
+    let vton = []
+    let retrieval = []
 
     User.findOne({username: username}, (err, user) => {
         if (err) {
@@ -155,7 +156,8 @@ router.addUser = (req, res) => {
                                         user.name = name
                                         user.avatar = null
                                         user.status = status
-                                        user.outfits = outfits
+                                        user.vton = vton
+                                        user.retrieval = retrieval
 
                                         // add user
                                         let token = jwt.sign({username: username}, config.superSecret, {
