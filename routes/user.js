@@ -83,7 +83,7 @@ router.findOne = (req, res) => {
 
     if (status === statusCode.ACTIVATE) {
         query.status = 0
-    } else {
+    } else if (status === statusCode.UNACTIVATE) {
         query.status = 1
     }
 
