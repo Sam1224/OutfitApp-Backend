@@ -14,6 +14,10 @@ var fileRouter = require('./routes/file')
 
 var app = express();
 
+// uploaded file size limit
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb'}));
+
 // upload files
 const upload = multer({dest: 'uploads/'})
 
