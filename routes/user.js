@@ -494,17 +494,17 @@ router.deleteVton = (req, res) => {
                     user = user[0]
 
                     let vtonid = req.body.vtonid
-                    let pose = req.body.pose
-                    let cloth = req.body.cloth
-                    let result = req.body.result
-                    let createAt = req.body.createAt
+                    // let pose = req.body.pose
+                    // let cloth = req.body.cloth
+                    // let result = req.body.result
+                    // let createAt = req.body.createAt
 
                     let vton = {}
                     vton._id = vtonid
-                    vton.pose = pose
-                    vton.cloth = cloth
-                    vton.result = result
-                    vton.createAt = createAt
+                    // vton.pose = pose
+                    // vton.cloth = cloth
+                    // vton.result = result
+                    // vton.createAt = createAt
 
                     User.update({_id: id, username: username}, {$pull: {vton: vton}}, (err) => {
                         if (err) {
@@ -604,17 +604,17 @@ router.deleteRetrieval = (req, res) => {
                     user = user[0]
 
                     let retrievalid = req.body.retrievalid
-                    let pose = req.body.pose
-                    let cloth = req.body.cloth
-                    let result = req.body.result
-                    let createAt = req.body.createAt
+                    // let pose = req.body.pose
+                    // let cloth = req.body.cloth
+                    // let result = req.body.result
+                    // let createAt = req.body.createAt
 
                     let retrieval = {}
                     retrieval._id = retrievalid
-                    retrieval.pose = pose
-                    retrieval.cloth = cloth
-                    retrieval.result = result
-                    retrieval.createAt = createAt
+                    // retrieval.pose = pose
+                    // retrieval.cloth = cloth
+                    // retrieval.result = result
+                    // retrieval.createAt = createAt
 
                     User.update({_id: id, username: username}, {$pull: {retrieval: retrieval}}, (err) => {
                         if (err) {
