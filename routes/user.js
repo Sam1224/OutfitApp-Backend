@@ -595,7 +595,7 @@ router.deleteRetrieval = (req, res) => {
             if (err) {
                 res.send(JSON.stringify({code: statusCode.ERR_NOK, error: err}, null, 5))
             } else {
-                if (user.length === 0) {
+                if (user === null || user.length === 0) {
                     res.send(JSON.stringify({
                         code: statusCode.USER_NE,
                         message: 'The user not exists'
