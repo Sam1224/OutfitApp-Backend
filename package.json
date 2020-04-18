@@ -23,10 +23,10 @@
     "start": "cross-env node ./bin/www",
     "start:prod": "cross-env NODE_ENV=dev node dist/bin/www",
     "start:watch": "cross-env NODE_ENV=dev nodemon --exec babel-node bin/www",
-    "test": "cross-env NODE_ENV=test mocha --timeout 10000 test/functional/api/*.js --exit",
-    "test:user": "cross-env NODE_ENV=test mocha --timeout 10000 test/functional/api/test-user.js --exit",
-    "test:admin": "cross-env NODE_ENV=test mocha --timeout 10000 test/functional/api/test-admin.js --exit",
-    "test:report": "cross-env NODE_ENV=test nyc mocha --timeout 10000 --exit"
+    "test": "cross-env NODE_ENV=test mocha --timeout 20000 test/functional/api/*.js --exit",
+    "test:user": "cross-env NODE_ENV=test mocha --timeout 20000 test/functional/api/test-user.js --exit",
+    "test:admin": "cross-env NODE_ENV=test mocha --timeout 20000 test/functional/api/test-admin.js --exit",
+    "test:report": "cross-env NODE_ENV=test nyc mocha --timeout 20000 --exit"
   },
   "dependencies": {
     "@babel/cli": "^7.2.3",

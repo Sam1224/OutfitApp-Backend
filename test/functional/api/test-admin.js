@@ -85,7 +85,8 @@ describe('Admin', () => {
     }
   })
 
-  describe('GET /admin', () => {
+  describe('GET /admin', function () {
+    this.timeout(20000)
     describe('when there is no jwt token', () => {
       it('should a message showing Not login yet, please login', () => {
         return request(server)
@@ -156,7 +157,8 @@ describe('Admin', () => {
     })
   })
 
-  describe('GET /admin/:id', () => {
+  describe('GET /admin/:id', function () {
+    this.timeout(20000)
     describe('when there is no jwt token', () => {
       it('should a message showing Not login yet, please login', () => {
         let admin = {}
@@ -220,7 +222,8 @@ describe('Admin', () => {
     })
   })
 
-  describe('POST /admin', () => {
+  describe('POST /admin', function () {
+    this.timeout(20000)
     describe('when the params are invalid', () => {
       describe('when the username is duplicated', () => {
         it('should return a message showing The username has been registered', () => {
@@ -337,7 +340,8 @@ describe('Admin', () => {
     })
   })
 
-  describe('PUT /admin/:id', () => {
+  describe('PUT /admin/:id', function () {
+    this.timeout(20000)
     describe('when there is no jwt token', () => {
       it('should a message showing Not login yet, please login', () => {
         let admin = {}
@@ -420,7 +424,8 @@ describe('Admin', () => {
     })
   })
 
-  describe('DELETE /admin/:id', () => {
+  describe('DELETE /admin/:id', function () {
+    this.timeout(20000)
     describe('when there is no jwt token', () => {
       it('should a message showing Not login yet, please login', () => {
         let admin = {}
@@ -499,7 +504,8 @@ describe('Admin', () => {
     })
   })
 
-  describe('POST /admin/login', () => {
+  describe('POST /admin/login', function () {
+    this.timeout(20000)
     describe('when the username is not registered', () => {
       it('should return a message showing The username is not registered', () => {
         let admin = {}
@@ -564,7 +570,8 @@ describe('Admin', () => {
     })
   })
 
-  describe('GET /admin/token/:username', () => {
+  describe('GET /admin/token/:username', function () {
+    this.timeout(20000)
     it('should return a token and a message showing Successfully login, use your token', () => {
       return request(server)
         .get('/admin/token/Sam1224')

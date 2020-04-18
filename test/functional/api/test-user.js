@@ -97,7 +97,8 @@ describe('User', () => {
     }
   })
 
-  describe('GET /user', () => {
+  describe('GET /user', function () {
+    this.timeout(20000)
     it('should return all the users', () => {
       return request(server)
         .get('/user')
@@ -126,7 +127,8 @@ describe('User', () => {
     })
   })
 
-  describe('GET /user/one', () => {
+  describe('GET /user/one', function () {
+    this.timeout(20000)
     describe('when the content is invalid', () => {
       it('should return an error', () => {
         return request(server)
@@ -214,7 +216,8 @@ describe('User', () => {
     })
   })
 
-  describe('POST /user', () => {
+  describe('POST /user', function () {
+    this.timeout(20000)
     describe('when the params are invalid', () => {
       describe('when the username is duplicated', () => {
         it('should return a message showing The username has been registered', () => {
@@ -333,7 +336,8 @@ describe('User', () => {
     })
   })
 
-  describe('PUT /user/:id', () => {
+  describe('PUT /user/:id', function () {
+    this.timeout(20000)
     describe('when there is no jwt token', () => {
       it('should a message showing Not login yet, please login', () => {
         let user = {}
@@ -421,7 +425,8 @@ describe('User', () => {
     })
   })
 
-  describe('DELETE /user/:id', () => {
+  describe('DELETE /user/:id', function () {
+    this.timeout(20000)
     describe('when there is no jwt token', () => {
       it('should a message showing Not login yet, please login', () => {
         let user = {}
@@ -498,7 +503,8 @@ describe('User', () => {
     })
   })
 
-  describe('POST /login', () => {
+  describe('POST /login', function () {
+    this.timeout(20000)
     describe('when the username is not registered', () => {
       it('should return a message showing The username is not registered', () => {
         let user = {}
@@ -585,7 +591,8 @@ describe('User', () => {
     })
   })
 
-  describe('GET /token/:username', () => {
+  describe('GET /token/:username', function () {
+    this.timeout(20000)
     it('should return a token and a message showing Successfully login, use your token', () => {
       return request(server)
         .get('/token/Sam1224')
