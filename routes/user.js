@@ -163,7 +163,7 @@ router.addUser = (req, res) => {
                                         let token = jwt.sign({username: username}, config.superSecret, {
                                             expiresIn: 3600
                                         })
-                                        let url = `http://localhost:3000/activateAccount?username=${username}&token=${token}`
+                                        let url = `https://outfitapp-sam.herokuapp.com/activateAccount?username=${username}&token=${token}`
                                         var mail = {
                                             from: 'Qianxiong Xu<18351818012@163.com>',
                                             subject: '[Custom Outfit App]Activate Your Account',
